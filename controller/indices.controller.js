@@ -15,18 +15,26 @@ async function createNewIndex(req , res , next){
 }
 async function removeIndex(req , res , next){
     try {
-        
+        const {indexName} = req.params;
+        const removeResult = elasticClient.indices.delete({index : indexName})
+        return res.json(removeResult)
     } catch (error) {
         next(error)
     }
 }
 async function getIndices(req , res , next){
     try {
-        
+        const indices = await elasticClient.indices.getAlias();
+        const regexp = /^\.+/
+        return res.json({
+            indices : Object.keys(indices).filter(item => !regexp.test(item))
+        })
     } catch (error) {
         next(error)
     }
 }
 module.exports = {
-    createNewIndex
+    createNewIndex ,
+    getIndices , 
+    removeIndex
 }

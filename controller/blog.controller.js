@@ -74,6 +74,23 @@ async function updateBlog(req , res , next){
         
     }
 }
+async function updateBlog2(req, res, next) {
+    try {
+        const {id} = req.params;
+        const data = req.body;
+        Object.keys(data).forEach(key => {
+            if(!data[key]) delete data[key]
+        })
+        const updateResult = await elasticClient.update({
+            index: indexBlog,
+            id,
+            doc: data
+        })
+        return res.json(updateResult)
+    } catch (error) {
+        next(error)
+    }
+}
 async function searchByTitle(req , res , next){
     try {
         
@@ -103,5 +120,6 @@ module.exports = {
     searchByTitle ,
     searchByMultiField ,
     searchByRegexp ,
-    updateBlog
+    updateBlog ,
+    updateBlog2
 }

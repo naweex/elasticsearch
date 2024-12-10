@@ -1,8 +1,10 @@
-const { createNewIndex } = require('../controller/indices.controller');
+const { createNewIndex, getIndices, removeIndex } = require('../controller/indices.controller');
 
 const indicesRoutes = require('express').Router();
 
-indicesRoutes.get('/create' , createNewIndex)
+indicesRoutes.post('/create' , createNewIndex)
+indicesRoutes.get('/list' , getIndices)
+indicesRoutes.delete('/delete/:indexName' , removeIndex)
 
 
 module.exports = {

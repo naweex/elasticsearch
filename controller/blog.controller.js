@@ -109,14 +109,34 @@ async function searchByTitle(req , res , next){
 }
 async function searchByMultiField(req , res , next){
     try {
-        
+        const {search} = req.query; 
+        const result = await elasticClient.search({
+            index: indexBlog,
+            query: {
+                multi_match: {
+                    query: search,
+                    fields: ["title", "text", "author"]
+                }
+            }
+        })
+        const blogs = result.hits.hits
+        return res.json(blogs)
     } catch (error) {
         next(error)
     }
 }
 async function searchByRegexp(req , res , next){
     try {
-        
+        const {search} = req.query;
+        const result = await elasticClient.search({
+            index: indexBlog,
+            query: {
+                regexp: {
+                    title: `.*${search}.*`
+                }
+            }
+    })
+    return res.json(result.hits.hits)
     } catch (error) {
         next(error)
     }

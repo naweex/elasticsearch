@@ -93,7 +93,16 @@ async function updateBlog2(req, res, next) {
 }
 async function searchByTitle(req , res , next){
     try {
-        
+        const {title} = req.query;
+        const result = await elasticClient.search({
+            index: indexBlog,
+            query: {
+                match: {
+                    title
+                }
+            }
+        })
+        return res.json(result.hits.hits)
     } catch (error) {
         next(error)
     }

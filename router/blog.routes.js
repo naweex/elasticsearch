@@ -1,4 +1,4 @@
-const { createNewBlog, getAllBlogs, removeBlog, updateBlog , updateBlog2, searchByTitle, searchByMultiField, searchByRegexp } = require('../controller/blog.controller')
+const { createNewBlog, getAllBlogs, removeBlog, updateBlog , updateBlog2, searchByTitle, searchByMultiField, searchByRegexp, findBlogByMultifield } = require('../controller/blog.controller')
 
 const blogRouter = require('express').Router()
 
@@ -10,6 +10,7 @@ blogRouter.put('/update2/:id' , updateBlog2)
 blogRouter.get('/findByTitle' , searchByTitle)
 blogRouter.get('/multi-fields' , searchByMultiField)
 blogRouter.get('/regexp-search' , searchByRegexp)
+blogRouter.get('/findBlogByMultifield' , findBlogByMultifield)
 module.exports = {
     blogRouter
 }

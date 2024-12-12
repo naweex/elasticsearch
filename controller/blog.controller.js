@@ -141,7 +141,32 @@ async function searchByRegexp(req , res , next){
         next(error)
     }
 }
-
+async function findBlogByMultifield(req, res, next) {
+    try {
+        const {search} = req.query;
+        const result = await elasticClient.search({
+            index: indexBlog,
+            query: {
+                bool: {
+                    should: [
+                        {
+                            regexp: {title: `.*${search}.*`}
+                        },
+                        {
+                            regexp: {author: `.*${search}.*`}
+                        },
+                        {
+                            regexp: {text: `.*${search}.*`}
+                        },
+                    ]
+                }
+            }
+        })
+        return res.json(result.hits.hits)
+    } catch (error) {
+        next(error)
+    }
+}
 module.exports = {
     getAllBlogs ,
     createNewBlog ,
@@ -150,5 +175,6 @@ module.exports = {
     searchByMultiField ,
     searchByRegexp ,
     updateBlog ,
-    updateBlog2
+    updateBlog2 ,
+    findBlogByMultifield
 }
